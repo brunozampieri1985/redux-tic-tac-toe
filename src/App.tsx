@@ -1,5 +1,6 @@
 import './App.css'
 import Board from './components/Board'
+import Scoreboard from './components/Scoreboard'
 import useGame from './hooks/useGame'
 
 const App: React.FC = () => {
@@ -15,7 +16,7 @@ const App: React.FC = () => {
         <button onClick={newGame}>Novo Jogo</button>
       </div>
       <div className="right">
-        
+        <Scoreboard />
       </div>
     </div>
   )

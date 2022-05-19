@@ -1,6 +1,7 @@
 import './Board.css'
 import useGame from '../../hooks/useGame'
 import { IGame, PlayerType } from '../../store/features/game'
+import useScoreboard from '../../hooks/useScoreboard'
 
 interface BoardProps {
   game: IGame
@@ -10,6 +11,7 @@ interface BoardProps {
 
 const Board: React.FC<BoardProps> = ({ game, size, disabled }) => {
   const { getGame, makeMove } = useGame()
+  const { saveGame } = useScoreboard()
 
   const { moves, winner } = getGame()
   var currentPlayer = moves.length > 0 ? moves[moves.length - 1].player : null
@@ -24,8 +26,14 @@ const Board: React.FC<BoardProps> = ({ game, size, disabled }) => {
 
   if (winner) {
     return (
-      <div>        
-        {winner && <div>{winner === 'T' ? 'Empate' : `${winner} VENCEU!`}</div>}
+      <div>
+        {winner && (
+          <div>
+            <div>{winner === 'T' ? 'Empate' : `${winner} VENCEU!`}</div>
+            <br/>
+            <button onClick={() => saveGame(game)}>Registrar no placar?</button>
+          </div>
+        )}
       </div>
     )
   }

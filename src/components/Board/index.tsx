@@ -1,11 +1,6 @@
 import './Board.css'
-import { useAppDispatch, useAppSelector } from '../../hooks/useRedux'
-import {
-  IGame,
-  PlayerType,
-  checkWinner,
-  makeMove,
-} from '../../store/features/game'
+import useGame from '../../hooks/useGame'
+import { IGame, PlayerType } from '../../store/features/game'
 
 interface BoardProps {
   game: IGame
@@ -14,25 +9,22 @@ interface BoardProps {
 }
 
 const Board: React.FC<BoardProps> = ({ game, size, disabled }) => {
-  const dispatch = useAppDispatch()
-  const moves = useAppSelector((state) => state.game.moves)
-  const winner = useAppSelector((state) => state.game.winner)
+  const { getGame, makeMove } = useGame()
+
+  const { moves, winner } = getGame()
   var currentPlayer = moves.length > 0 ? moves[moves.length - 1].player : null
 
   const handleClick = (index: number) => {
     if (!disabled) {
       let newPlayer: PlayerType =
         currentPlayer === null ? 'X' : currentPlayer === 'X' ? 'O' : 'X'
-      dispatch(makeMove({ player: newPlayer, index }))
-      dispatch(checkWinner())
-      console.log(winner)
+      makeMove(newPlayer, index)
     }
   }
 
   if (winner) {
     return (
-      <div>
-        {/* {winner && moves.length === 9 && <div>Empate</div>} */}
+      <div>        
         {winner && <div>{winner === 'T' ? 'Empate' : `${winner} VENCEU!`}</div>}
       </div>
     )
